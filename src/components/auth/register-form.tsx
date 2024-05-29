@@ -45,9 +45,9 @@ const RegisterForm = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">Sign up</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your information below to create an account
         </CardDescription>
       </CardHeader>
 

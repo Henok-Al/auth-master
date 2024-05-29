@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ResetSchema } from "@/schemas";
+import { TwoFactorSchema } from "@/schemas";
 
 import {
   Card,
@@ -23,19 +23,27 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BackButton from "./back-button";
 
-const ResetForm = () => {
-  const form = useForm<z.infer<typeof ResetSchema>>({
-    resolver: zodResolver(ResetSchema),
+const NewVerificationForm = () => {
+  const form = useForm<z.infer<typeof TwoFactorSchema>>({
+    resolver: zodResolver(TwoFactorSchema),
     defaultValues: {
-      email: "",
+      code: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof ResetSchema>) => {
+  const onSubmit = (data: z.infer<typeof TwoFactorSchema>) => {
     console.log(data);
   };
 
@@ -43,9 +51,9 @@ const ResetForm = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Forgot your password</CardTitle>
+        <CardTitle className="text-2xl">Confirm</CardTitle>
         <CardDescription>
-          Enter your email to reset your password
+          Enter your OTP code below to verify your email
         </CardDescription>
       </CardHeader>
 
@@ -53,18 +61,29 @@ const ResetForm = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-              name="email"
+              name="code"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Code</FormLabel>
                   <FormControl>
-                    <Input
-                      type="email"
-                      disabled={isLoading}
-                      placeholder="enter your email"
-                      {...field}
-                    />
+                    <InputOTP maxLength={6} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                    </InputOTP>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,7 +91,7 @@ const ResetForm = () => {
             />
 
             <Button type="submit" disabled={isLoading} className="w-full">
-              Send reset email
+             Confirm
             </Button>
           </form>
         </Form>
@@ -85,4 +104,4 @@ const ResetForm = () => {
   );
 };
 
-export default ResetForm;
+export default NewVerificationForm;

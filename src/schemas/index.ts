@@ -14,3 +14,7 @@ export const RegisterSchema = z.object({
 export const ResetSchema = z.object({
   email: z.string().email()
 })
+
+export const TwoFactorSchema = z.object({
+  code: z.string().length(6)
+})
