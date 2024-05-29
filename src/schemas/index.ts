@@ -10,3 +10,7 @@ export const RegisterSchema = z.object({
   email:z.string().email(),
   password:z.string().min(8)
 })
+
+export const ResetSchema = z.object({
+  email: z.string().email()
+})

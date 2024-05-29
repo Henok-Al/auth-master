@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/schemas";
+import { ResetSchema } from "@/schemas";
 
 import {
   Card,
@@ -25,18 +25,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import BackButton from "./back-button";
 
-const LoginForm = () => {
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+const ResetForm = () => {
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (data: z.infer<typeof ResetSchema>) => {
     console.log(data);
   };
 
@@ -71,55 +70,19 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      disabled={isLoading}
-                      placeholder="enter your password"
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <Button
-                    size={"sm"}
-                    variant={"link"}
-                    asChild
-                    className="px-0 font-normal"
-                  >
-                    <Link href={"/auth/reset"}>Forget your password</Link>
-                  </Button>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <Button type="submit" disabled={isLoading} className="w-full">
-              Login
+              Send reset email
             </Button>
           </form>
         </Form>
-
-        <Button variant={"outline"} className="w-full" onClick={() => {}}>
-          Login with Google
-        </Button>
-
-        <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?
-          <Link href={"/auth/sign-up"} className="underline">
-            Sign up
-          </Link>
-        </div>
       </CardContent>
 
-      
+      <CardFooter>
+        <BackButton href={"/auth/sign-in"} label={"Back to Login"} />
+      </CardFooter>
     </Card>
   );
 };
 
-export default LoginForm;
+export default ResetForm;
