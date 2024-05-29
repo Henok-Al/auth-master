@@ -18,3 +18,7 @@ export const ResetSchema = z.object({
 export const TwoFactorSchema = z.object({
   code: z.string().length(6)
 })
+
+export const NewPasswordSchema = z.object({
+  password: z.string().length(8)
+})
