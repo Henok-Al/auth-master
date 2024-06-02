@@ -8,6 +8,7 @@ import Image from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
 import PricingSection from "../../components/home/PricingSection";
+import Link from 'next/link';
 
 const data = [
   {
@@ -141,7 +142,7 @@ const page = () => {
             <>
               <h1 className="text-4xl font-semibold">
                 <Button size={"lg"} className="rounded-xl">
-                  Get started today
+                  <Link href={"/auth/sign-in"} className="w-full">Get started today</Link>
                 </Button>{" "}
                 <br />
                 <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">

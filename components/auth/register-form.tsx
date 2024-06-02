@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useForm } from "react-hook-form";
+import React, { useState, useTransition } from 'react'
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "../../schemas";
@@ -26,8 +26,15 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { register } from "@/../action/auth/register";
+import { redirect } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import { DEFAULT_LOGIN_REDIRECT } from '@/../routes'
 
 const RegisterForm = () => {
+  const [error, setError] = useState<string | undefined>("")
+  const [ isPending, startTransition ] = useTransition()
+  const [ showTwoFactor, setShowTwoFactor ] = useState(false)
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -38,8 +45,35 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
-    console.log(data);
-  };
+    setError('')
+
+    startTransition(()=> {
+        register(data)
+            .then((response) => {
+                if (response.error) {
+                    form.reset()
+                    setError(response.error)
+                }
+
+                if(response.twoFactor) {
+                    setShowTwoFactor(true)
+                }
+            })
+            .catch((error) => {
+                setError('An error occurred')
+            })
+
+    })
+}
+
+if (showTwoFactor) {
+    return redirect('/auth/new-verification');
+}
+
+const onClick = (provider: 'google') => {
+    signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT})
+}
+
 
   const isLoading = form.formState.isSubmitting;
   return (
