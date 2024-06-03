@@ -30,6 +30,7 @@ import { register } from "@/../action/auth/register";
 import { redirect } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { DEFAULT_LOGIN_REDIRECT } from '@/../routes'
+import FormError from "../global/form-error";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("")
@@ -75,7 +76,7 @@ const onClick = (provider: 'google') => {
 }
 
 
-  const isLoading = form.formState.isSubmitting;
+  // const isPending = form.formState.isSubmitting;
   return (
     <Card>
       <CardHeader>
@@ -96,7 +97,7 @@ const onClick = (provider: 'google') => {
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isLoading}
+                      disabled={isPending}
                       placeholder="enter your full name"
                       {...field}
                     />
@@ -114,7 +115,7 @@ const onClick = (provider: 'google') => {
                   <FormControl>
                     <Input
                       type="email"
-                      disabled={isLoading}
+                      disabled={isPending}
                       placeholder="enter your email"
                       {...field}
                     />
@@ -132,7 +133,7 @@ const onClick = (provider: 'google') => {
                   <FormControl>
                     <Input
                       type="password"
-                      disabled={isLoading}
+                      disabled={isPending}
                       placeholder="enter your password"
                       {...field}
                     />
@@ -143,7 +144,9 @@ const onClick = (provider: 'google') => {
               )}
             />
 
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <FormError message={error}/>
+
+            <Button type="submit" disabled={isPending} className="w-full">
               Create your account
             </Button>
           </form>
