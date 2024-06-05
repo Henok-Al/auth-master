@@ -22,3 +22,4 @@ export const TwoFactorSchema = z.object({
 export const NewPasswordSchema = z.object({
   password: z.string().length(8)
 })
+
